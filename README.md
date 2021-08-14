@@ -1,1 +1,0 @@
-# QMetric-Java-Exercise
