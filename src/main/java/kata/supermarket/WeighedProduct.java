@@ -15,6 +15,6 @@ public class WeighedProduct {
     }
 
     public Item weighing(final BigDecimal kilos) {
-        return new ItemByWeight(this, kilos);
+        return new ItemByWeight(this, kilos, new WeightedProductDiscountStrategy());
     }
 }
