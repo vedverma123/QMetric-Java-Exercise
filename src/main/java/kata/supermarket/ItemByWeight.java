@@ -21,8 +21,21 @@ public class ItemByWeight implements Item {
     @Override
     public BigDecimal discount() {
         if(discountStrategy != null){
-            return discountStrategy.calculateDiscount();
+            return discountStrategy.calculateDiscount(this);
         }
-        return null;
+        return BigDecimal.ZERO;
     }
+
+    public WeighedProduct getProduct() {
+        return product;
+    }
+
+    public BigDecimal getWeightInKilos() {
+        return weightInKilos;
+    }
+
+    public DiscountStrategy getDiscountStrategy() {
+        return discountStrategy;
+    }
+
 }

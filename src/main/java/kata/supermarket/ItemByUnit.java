@@ -19,8 +19,16 @@ public class ItemByUnit implements Item {
     @Override
     public BigDecimal discount() {
         if(discountStrategy != null){
-            return discountStrategy.calculateDiscount();
+            return discountStrategy.calculateDiscount(this);
         }
-        return null;
+        return BigDecimal.ZERO;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public DiscountStrategy getDiscountStrategy() {
+        return discountStrategy;
     }
 }

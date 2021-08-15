@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 public class BOGODiscountStrategy implements DiscountStrategy{
 
     @Override
-    public BigDecimal calculateDiscount() {
-        return null;
+    public BigDecimal calculateDiscount(final Item item) {
+        return BigDecimal.ZERO;
     }
 
 }

@@ -7,7 +7,16 @@ import java.math.BigDecimal;
  */
 public class WeightedProductDiscountStrategy implements DiscountStrategy{
     @Override
-    public BigDecimal calculateDiscount() {
-        return null;
+    public BigDecimal calculateDiscount(final Item item) {
+        if(item instanceof ItemByWeight){
+            ItemByWeight weightedItem = (ItemByWeight) item;
+            final BigDecimal weightInKilos = weightedItem.getWeightInKilos();
+
+            //we can change the below logic as required, depends on the discount strategy.
+            if(weightInKilos.doubleValue() >= BigDecimal.ONE.doubleValue()){
+                return new BigDecimal(weightedItem.price().divide(BigDecimal.valueOf(2)).doubleValue());
+            }
+        }
+        return BigDecimal.ZERO;
     }
 }

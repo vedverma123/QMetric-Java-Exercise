@@ -1,18 +1,24 @@
 package kata.supermarket;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BasketTest {
+
+    private DiscountStrategy discountStrategy;
 
     @DisplayName("basket provides its total value when containing...")
     @MethodSource
@@ -21,6 +27,26 @@ class BasketTest {
         final Basket basket = new Basket();
         items.forEach(basket::add);
         assertEquals(new BigDecimal(expectedTotal), basket.total());
+    }
+
+    @DisplayName("basket provides its total value when containing discounted product")
+    @Test
+    void basketProvidesTotalValueWhenContainsDiscount() {
+        List<Item> items = new ArrayList<>();
+        final WeighedProduct weighedProduct = new WeighedProduct(new BigDecimal("2.0"));
+        discountStrategy = new WeightedProductDiscountStrategy();
+        items.add(new ItemByWeight(weighedProduct, new BigDecimal("1.0"), discountStrategy));
+        basketProvidesTotalValue("basket provides its total value when containing 1 kg of loose carrots", "1.00", items);
+    }
+
+    @DisplayName("basket provides its total value when containing products are not eligible for discount")
+    @Test
+    void basketProvidesTotalValueWhenContainsNoDiscount() {
+        List<Item> items = new ArrayList<>();
+        final WeighedProduct weighedProduct = new WeighedProduct(new BigDecimal("2.0"));
+        discountStrategy = new WeightedProductDiscountStrategy();
+        items.add(new ItemByWeight(weighedProduct, new BigDecimal("0.9"), discountStrategy));
+        basketProvidesTotalValue("basket provides its total value when containing 0.9 kg of loose carrots", "1.80", items);
     }
 
     static Stream<Arguments> basketProvidesTotalValue() {
